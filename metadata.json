@@ -1,0 +1,17 @@
+{
+  "version": {
+    "license": "GPL-3.0-only"
+  },
+  "categories": {
+    "firefox": ["feeds-news-blogging"]
+  },
+  "homepage": {
+    "en-US": "https://github.com/sebastianlay/orange-elephant"
+  },
+  "name": {
+    "en-US": "Orange Elephant for Hacker News"
+  },
+  "description": {
+    "en-US": "Add short and personal annotations to Hacker News usernames, synced across your browser instances."
+  }
+}

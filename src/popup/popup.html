@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Orange Elephant</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="popup">
+    <header class="header">
+      <img src="../../assets/icons/icon48.png" alt="Orange Elephant Icon" class="icon">
+      <h1 class="title">Orange Elephant</h1>
+      <p class="subtitle">Hacker News User Annotations</p>
+    </header>
+
+    <div class="stats">
+      <span class="stat-label">remembering</span>
+      <span class="stat-count" id="annotationCount">0</span>
+      <span class="stat-label">annotations</span>
+    </div>
+
+    <div class="storage-info">
+      <div class="storage-track">
+        <div class="storage-bar" id="storageBar"></div>
+      </div>
+      <span class="storage-text" id="storageText">Loading...</span>
+    </div>
+
+    <div class="search-container">
+      <input type="text" id="searchInput" class="search-input" placeholder="Search annotations...">
+    </div>
+
+    <div class="annotations-list" id="annotationsList">
+      <p class="empty-message">No annotations yet. Click on a username on Hacker News to add one!</p>
+    </div>
+
+    <div class="actions">
+      <button id="exportBtn" class="btn btn-secondary">Export</button>
+      <button id="importBtn" class="btn btn-secondary">Import</button>
+    </div>
+
+    <input type="file" id="importFile" accept=".json" style="display: none;">
+  </div>
+
+  <script src="../utils/storage.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

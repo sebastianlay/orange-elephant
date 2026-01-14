@@ -1,0 +1,46 @@
+{
+  "manifest_version": 3,
+  "name": "Orange Elephant for Hacker News",
+  "short_name": "O. Elephant",
+  "version": "1.0.0",
+  "description": "Add short and personal annotations to Hacker News usernames, synced across your browser instances.",
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "@orange-elephant.sebastian-lay",
+      "data_collection_permissions": {
+        "required": ["none"]
+      }
+    }
+  },
+  "icons": {
+    "16": "assets/icons/icon16.png",
+    "48": "assets/icons/icon48.png",
+    "128": "assets/icons/icon128.png"
+  },
+  "permissions": [
+    "storage"
+  ],
+  "host_permissions": [
+    "https://news.ycombinator.com/*"
+  ],
+  "action": {
+    "default_title": "Orange Elephant",
+    "default_popup": "src/popup/popup.html",
+    "default_icon": {
+      "16": "assets/icons/icon16.png",
+      "48": "assets/icons/icon48.png",
+      "128": "assets/icons/icon128.png"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://news.ycombinator.com/*"],
+      "js": [
+        "src/utils/storage.js",
+        "src/content/content.js"
+      ],
+      "css": ["src/content/content.css"],
+      "run_at": "document_idle"
+    }
+  ]
+}

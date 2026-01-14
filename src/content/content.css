@@ -1,0 +1,117 @@
+/* Orange Elephant - Content Styles */
+
+.oe-badge {
+  color: #666;
+  background-color: #ccc;
+  cursor: pointer;
+  margin-left: 3px;
+  padding: 1px 4px;
+}
+
+.oe-badge:hover {
+  text-decoration: underline;
+}
+
+.oe-popup {
+  position: absolute;
+  z-index: 10000;
+  background: #f6f6ef;
+  border: 1px solid #828282;
+  padding: 10px;
+  min-width: 250px;
+  font-family: Verdana, Geneva, sans-serif;
+  font-size: 8pt;
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.oe-popup-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.oe-popup-title {
+  color: #000;
+}
+
+.oe-popup-title strong {
+  color: #000;
+}
+
+.oe-popup-close {
+  background: none;
+  border: none;
+  font-size: 16px;
+  color: #828282;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+}
+
+.oe-popup-close:hover {
+  color: #000;
+}
+
+.oe-popup-input {
+  width: 100%;
+  padding: 4px;
+  border: 1px solid #828282;
+  box-sizing: border-box;
+  margin-bottom: 8px;
+  font-family: Verdana, Geneva, sans-serif;
+  font-size: 8pt;
+}
+
+.oe-popup-input:focus {
+  outline: none;
+}
+
+.oe-popup-actions {
+  display: flex;
+  justify-content: space-between;
+}
+
+.oe-link, .oe-btn {
+  font-family: Verdana, Geneva, sans-serif;
+  font-size: 8pt;
+  cursor: pointer;
+  color: #000;
+}
+
+.oe-link {
+  background: none;
+  border: none;
+  padding: 0;
+  text-decoration: underline;
+}
+
+.oe-link:hover {
+  text-decoration: none;
+}
+
+.oe-button-group {
+  display: flex;
+  gap: 8px;
+}
+
+.oe-btn {
+  border: 1px solid #000;
+  background: #f60;
+  padding: 3px 7px;
+}
+
+.oe-btn:hover {
+  background: transparent;
+  border-color: #f60;
+  color: #f60;
+}
+
+.oe-btn-danger {
+  background-color: #f00;
+}
+
+.oe-btn-danger:hover {
+  border-color: #f00;
+  color: #f00;
+}

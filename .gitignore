@@ -1,0 +1,23 @@
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor directories
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Build outputs
+dist/
+build/
+web-ext-artifacts/
+*.zip
+.amo*
+
+# Dependencies (if any added later)
+node_modules/
+
+# Logs
+*.log

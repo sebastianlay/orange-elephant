@@ -1,0 +1,232 @@
+/* Orange Elephant - Popup Styles */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body, input {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  color: #333;
+  background: #fff;
+}
+
+.popup {
+  width: 320px;
+  padding: 16px;
+}
+
+/* Header */
+.header {
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #f60;
+  margin-bottom: 4px;
+}
+
+.subtitle {
+  font-size: 12px;
+  color: #666;
+}
+
+/* Stats */
+.stats {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-bottom: 16px;
+  padding: 12px;
+  background: #f8f8f8;
+  border-radius: 6px;
+}
+
+.stat-count {
+  font-size: 24px;
+  font-weight: 700;
+  color: #ff6600;
+}
+
+.stat-label {
+  font-size: 13px;
+  color: #666;
+}
+
+/* Storage Info */
+.storage-info {
+  margin-bottom: 12px;
+  padding: 8px 12px;
+  background: #f8f8f8;
+  border-radius: 6px;
+}
+
+.storage-track {
+  height: 6px;
+  background: #e0e0e0;
+  border-radius: 3px;
+  overflow: hidden;
+  margin-bottom: 4px;
+}
+
+.storage-bar {
+  height: 100%;
+  background: #f60;
+  border-radius: 3px;
+  transition: width 0.3s ease;
+  width: 0%;
+}
+
+.storage-bar.warning {
+  background: #dc3545;
+}
+
+.storage-text {
+  font-size: 11px;
+  color: #666;
+}
+
+/* Search */
+.search-container {
+  margin-bottom: 12px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 13px;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #ff6600;
+  box-shadow: 0 0 0 2px rgba(255, 102, 0, 0.15);
+}
+
+/* Annotations List */
+.annotations-list {
+  max-height: 200px;
+  overflow-y: auto;
+  margin-bottom: 12px;
+  border: 1px solid #eee;
+  border-radius: 6px;
+}
+
+.empty-message {
+  padding: 20px;
+  text-align: center;
+  color: #999;
+  font-size: 13px;
+}
+
+.annotation-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  border-bottom: 1px solid #eee;
+}
+
+.annotation-item:last-child {
+  border-bottom: none;
+}
+
+.annotation-item:hover {
+  background: #fafafa;
+}
+
+.annotation-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.annotation-username {
+  display: inline-block;
+  font-weight: 600;
+  color: #f60;
+  text-decoration: none;
+  margin-bottom: 2px;
+}
+
+.annotation-username:hover {
+  text-decoration: underline;
+}
+
+.annotation-note {
+  display: block;
+  font-size: 12px;
+  color: #666;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.annotation-delete {
+  background: none;
+  border: 1px solid transparent;
+  font-size: 18px;
+  color: #ccc;
+  cursor: pointer;
+  padding: 4px 8px;
+  margin-left: 8px;
+  border-radius: 4px;
+}
+
+.annotation-delete:hover {
+  color: #dc3545;
+  background: #fee;
+  border-color: #dc3545;
+}
+
+/* Actions */
+.actions {
+  display: flex;
+  gap: 8px;
+}
+
+.btn {
+  flex: 1;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.btn-secondary {
+  background: #f0f0f0;
+  color: #333;
+}
+
+.btn-secondary:hover {
+  background: #e0e0e0;
+}
+
+/* Scrollbar */
+.annotations-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.annotations-list::-webkit-scrollbar-track {
+  background: #f0f0f0;
+  border-radius: 3px;
+}
+
+.annotations-list::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 3px;
+}
+
+.annotations-list::-webkit-scrollbar-thumb:hover {
+  background: #999;
+}
