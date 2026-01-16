@@ -32,7 +32,8 @@
 .oe-popup {
   position: absolute;
   z-index: 10000;
-  background: #f6f6ef;
+  background-color: #f6f6ef;
+  color: #000;
   border: 1px solid #828282;
   padding: 10px;
   min-width: 250px;
@@ -47,19 +48,15 @@
   align-items: center;
   margin: -10px -10px 10px -10px;
   padding: 5px 10px;
-  background: #f60;
+  background-color: #f60;
 }
 
 .oe-popup-title {
   color: #000;
 }
 
-.oe-popup-title strong {
-  color: #000;
-}
-
 .oe-popup-close {
-  background: none;
+  background-color: transparent;
   border: none;
   font-size: 16px;
   color: #000;
@@ -105,7 +102,7 @@
 }
 
 .oe-link {
-  background: none;
+  background-color: transparent;
   border: none;
   padding: 0;
   text-decoration: underline;
@@ -123,12 +120,12 @@
 
 .oe-btn {
   border: 1px solid #000;
-  background: #f60;
+  background-color: #f60;
   padding: 3px 7px;
 }
 
 .oe-btn:hover, .oe-btn:focus {
-  background: transparent;
+  background-color: transparent;
   border-color: #f60;
   color: #f60;
 }
@@ -140,4 +137,31 @@
 .oe-btn-danger:hover, .oe-btn-danger:focus {
   border-color: #f00;
   color: #f00;
+}
+
+/* Dark Reader compatibility */
+
+html[data-darkreader-scheme="dark"] .oe-badge {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: currentcolor;
+}
+
+html[data-darkreader-scheme="dark"] .oe-popup {
+  background-color: var(--darkreader-background-ffffff);
+}
+
+html[data-darkreader-scheme="dark"] .oe-popup-title,
+html[data-darkreader-scheme="dark"] .oe-btn,
+html[data-darkreader-scheme="dark"] .oe-link {
+  color: #fff;
+}
+
+html[data-darkreader-scheme="dark"] .oe-link:hover,
+html[data-darkreader-scheme="dark"] .oe-link:focus {
+  color: #f60;
+}
+
+html[data-darkreader-scheme="dark"] .oe-popup-close {
+  color: #fff;
+  outline-color: #fff;
 }
