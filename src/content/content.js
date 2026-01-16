@@ -9,6 +9,7 @@
   // State
   let annotations = {};
   let activePopup = null;
+  let lastFocusedElement = null;
 
   // Initialize
   async function init() {
@@ -54,6 +55,15 @@
         showPopup(link, username);
       });
 
+      // Keyboard support: Enter opens popup, allow Ctrl/Cmd+Enter for navigation
+      link.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && !e.ctrlKey && !e.metaKey && !e.shiftKey) {
+          e.preventDefault();
+          e.stopPropagation();
+          showPopup(link, username);
+        }
+      });
+
       // Add annotation badge if exists
       if (annotations[username]) {
         addAnnotationBadge(link, username);
@@ -77,10 +87,24 @@
     badge.textContent = annotations[username];
     badge.dataset.username = username;
 
+    // Accessibility: make badge focusable and announce its purpose
+    badge.setAttribute('role', 'button');
+    badge.setAttribute('tabindex', '0');
+    badge.setAttribute('aria-label', `Annotation for ${username}: ${annotations[username]}. Activate to edit.`);
+
     badge.addEventListener('click', (e) => {
       e.preventDefault();
       e.stopPropagation();
       showPopup(badge, username);
+    });
+
+    // Keyboard support for badges
+    badge.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        e.stopPropagation();
+        showPopup(badge, username);
+      }
     });
 
     link.insertAdjacentElement('afterend', badge);
@@ -108,23 +132,34 @@
   function showPopup(anchor, username) {
     closePopup();
 
+    // Store the element that triggered the popup for focus restoration
+    lastFocusedElement = anchor;
+
     const hasAnnotation = !!annotations[username];
     const rect = anchor.getBoundingClientRect();
 
     const popup = document.createElement('div');
     popup.className = 'oe-popup';
 
+    // Accessibility: dialog role and ARIA attributes
+    popup.setAttribute('role', 'dialog');
+    popup.setAttribute('aria-modal', 'true');
+    popup.setAttribute('aria-labelledby', 'oe-popup-title');
+    popup.setAttribute('aria-describedby', 'oe-popup-description');
+
     const popupHtml = `
       <div class="oe-popup-header">
-        <span class="oe-popup-title"><strong>${escapeHtml(username)}</strong></span>
-        <button class="oe-popup-close" aria-label="Close">&times;</button>
+        <span class="oe-popup-title" id="oe-popup-title"><strong>${escapeHtml(username)}</strong></span>
+        <button class="oe-popup-close" type="button" aria-label="Close dialog">&times;</button>
       </div>
-      <input type="text" class="oe-popup-input" placeholder="Enter annotation..." value="${escapeHtml(annotations[username] || '')}" maxlength="50">
+      <p id="oe-popup-description" class="oe-sr-only">${hasAnnotation ? 'Edit or delete your annotation for this user.' : 'Add an annotation for this user.'}</p>
+      <label for="oe-popup-input" class="oe-sr-only">Annotation for ${escapeHtml(username)}</label>
+      <input type="text" id="oe-popup-input" class="oe-popup-input" placeholder="Enter annotation..." value="${escapeHtml(annotations[username] || '')}" maxlength="50">
       <div class="oe-popup-actions">
-        <button class="oe-link oe-popup-visit">Visit Profile</button>
+        <button class="oe-link oe-popup-visit" type="button">Visit Profile</button>
         <div class="oe-button-group">
-          ${hasAnnotation ? '<button class="oe-btn oe-btn-danger oe-popup-delete">Delete</button>' : ''}
-          <button class="oe-btn oe-btn-primary oe-popup-save">Save</button>
+          ${hasAnnotation ? '<button class="oe-btn oe-btn-danger oe-popup-delete" type="button">Delete</button>' : ''}
+          <button class="oe-btn oe-btn-primary oe-popup-save" type="button">Save</button>
         </div>
       </div>
     `;
@@ -186,10 +221,38 @@
       }
     });
 
+    // Focus trap: keep Tab key cycling within the popup
+    popup.addEventListener('keydown', handleFocusTrap);
+
     // Close on outside click
     setTimeout(() => {
       document.addEventListener('click', handleOutsideClick);
     }, 0);
+  }
+
+  // Handle focus trap within popup
+  function handleFocusTrap(e) {
+    if (e.key !== 'Tab' || !activePopup) return;
+
+    const focusableElements = activePopup.querySelectorAll(
+      'button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])'
+    );
+    const firstElement = focusableElements[0];
+    const lastElement = focusableElements[focusableElements.length - 1];
+
+    if (e.shiftKey) {
+      // Shift+Tab: if on first element, wrap to last
+      if (document.activeElement === firstElement) {
+        e.preventDefault();
+        lastElement.focus();
+      }
+    } else {
+      // Tab: if on last element, wrap to first
+      if (document.activeElement === lastElement) {
+        e.preventDefault();
+        firstElement.focus();
+      }
+    }
   }
 
   // Save annotation
@@ -220,6 +283,12 @@
       activePopup = null;
     }
     document.removeEventListener('click', handleOutsideClick);
+
+    // Restore focus to the element that triggered the popup
+    if (lastFocusedElement && typeof lastFocusedElement.focus === 'function') {
+      lastFocusedElement.focus();
+      lastFocusedElement = null;
+    }
   }
 
   // Handle outside click

@@ -1,5 +1,17 @@
 /* Orange Elephant - Content Styles */
 
+.oe-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 .oe-badge {
   color: #666;
   background-color: #ccc;
@@ -10,6 +22,11 @@
 
 .oe-badge:hover {
   text-decoration: underline;
+}
+
+.oe-badge:focus {
+  outline: 2px solid #f60;
+  outline-offset: 1px;
 }
 
 .oe-popup {
@@ -28,7 +45,9 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 8px;
+  margin: -10px -10px 10px -10px;
+  padding: 5px 10px;
+  background: #f60;
 }
 
 .oe-popup-title {
@@ -43,14 +62,15 @@
   background: none;
   border: none;
   font-size: 16px;
-  color: #828282;
+  color: #000;
   cursor: pointer;
-  padding: 0;
+  padding: 0 3px;
   line-height: 1;
 }
 
-.oe-popup-close:hover {
-  color: #000;
+.oe-popup-close:focus {
+  outline: 1px solid #000;
+  outline-offset: 1px;
 }
 
 .oe-popup-input {
@@ -65,6 +85,7 @@
 
 .oe-popup-input:focus {
   outline: none;
+  border-color: #f60;
 }
 
 .oe-popup-actions {
@@ -79,6 +100,10 @@
   color: #000;
 }
 
+.oe-link:focus, .oe-btn:focus {
+  outline: none;
+}
+
 .oe-link {
   background: none;
   border: none;
@@ -86,8 +111,9 @@
   text-decoration: underline;
 }
 
-.oe-link:hover {
+.oe-link:hover, .oe-link:focus {
   text-decoration: none;
+  color: #f60;
 }
 
 .oe-button-group {
@@ -101,7 +127,7 @@
   padding: 3px 7px;
 }
 
-.oe-btn:hover {
+.oe-btn:hover, .oe-btn:focus {
   background: transparent;
   border-color: #f60;
   color: #f60;
@@ -111,7 +137,7 @@
   background-color: #f00;
 }
 
-.oe-btn-danger:hover {
+.oe-btn-danger:hover, .oe-btn-danger:focus {
   border-color: #f00;
   color: #f00;
 }
