@@ -1,3 +1,5 @@
+![Logo](/assets/icons/icon48.png)
+
 # Orange Elephant
 
 A browser extension that lets you add personal annotations to Hacker News usernames. Annotations are synced across all browser instances where you're logged in.
@@ -10,6 +12,10 @@ A browser extension that lets you add personal annotations to Hacker News userna
 - Automatic sync across browsers via browser sync storage
 - Search, export, and import annotations via the popup
 - Works on Chrome and Firefox
+
+![Add short annotations to any user on Hacker News](/assets/screenshots/add-annotations.png)
+![Manage your annotations, which are automatically synced to your other browser instances when you are logged in](/assets/screenshots/manage-annotations.png)
+![Integrates with Dark Reader](/assets/screenshots/supports-dark-reader.png)
 
 ## Usage
 
