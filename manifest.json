@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Orange Elephant for Hacker News",
   "short_name": "O. Elephant",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Add short and personal annotations to Hacker News usernames, synced across your browser instances.",
   "browser_specific_settings": {
     "gecko": {
