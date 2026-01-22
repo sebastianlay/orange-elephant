@@ -4,12 +4,17 @@
 
 A browser extension that lets you add personal annotations to Hacker News usernames. Annotations are synced across all browser instances where you're logged in.
 
+## Installation
+
+- Mozilla Firefox: [https://addons.mozilla.org/firefox/addon/orange-elephant-for-hacker-new/](https://addons.mozilla.org/firefox/addon/orange-elephant-for-hacker-new/)
+- Google Chrome: [https://chromewebstore.google.com/detail/orange-elephant-for-hacke/haahgegikakecgeddkbgkbhfibdhmdmk](https://chromewebstore.google.com/detail/orange-elephant-for-hacke/haahgegikakecgeddkbgkbhfibdhmdmk)
+
 ## Features
 
 - Add short annotations to any Hacker News username
 - Annotations appear as badges next to usernames
 - Click on a username to add or edit an annotation
-- Automatic sync across browsers via browser sync storage
+- Automatic sync across browser instances via browser sync storage
 - Search, export, and import annotations via the popup
 - Works on Chrome and Firefox
 
@@ -46,17 +51,6 @@ Click the extension icon to open the popup where you can:
 - Export annotations as JSON
 - Import annotations from JSON
 
-## Syncing
+## Syncing und Privacy
 
-Annotations are stored using the browser's sync storage API. As long as you're signed into your browser (Chrome account or Firefox account), annotations will automatically sync to all your browser instances.
-
-**Storage limits:**
-- Total: 100KB
-- Per item: 8KB
-
-This is sufficient for hundreds of short annotations.
-
-## Privacy
-
-- All annotations are stored in your browser's sync storage
-- Annotations are only visible to you
+Annotations are stored using the browser's sync storage API and are only visible to you. As long as you're signed into your browser (Chrome account or Firefox account), annotations will automatically sync to all your browser instances. There is a storage limit of 100KB, but this is sufficient for hundreds of short annotations.
