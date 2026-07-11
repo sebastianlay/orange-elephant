@@ -33,6 +33,7 @@
     {
       "matches": ["https://news.ycombinator.com/*"],
       "js": [
+        "src/utils/util.js",
         "src/utils/storage.js",
         "src/content/content.js"
       ],

@@ -6,6 +6,8 @@
   // Cross-browser storage API (for change listener)
   const storage = typeof browser !== 'undefined' ? browser.storage : chrome.storage;
 
+  const { escapeHtml, sanitizeAnnotations } = OrangeElephantUtil;
+
   // DOM elements
   const countEl = document.getElementById('annotationCount');
   const listEl = document.getElementById('annotationsList');
@@ -151,20 +153,17 @@
         const text = await file.text();
         const data = JSON.parse(text);
 
-        if (data.annotations && typeof data.annotations === 'object') {
-          // Validate annotations format
-          const validAnnotations = {};
-          for (const [key, value] of Object.entries(data.annotations)) {
-            if (typeof key === 'string' && typeof value === 'string') {
-              validAnnotations[key] = value;
-            }
-          }
-
+        const result = sanitizeAnnotations(data?.annotations);
+        if (result) {
           // Merge with existing annotations
-          annotations = { ...annotations, ...validAnnotations };
+          annotations = { ...annotations, ...result.annotations };
           await saveAnnotations();
           render(searchInput.value);
-          alert(`Imported ${Object.keys(validAnnotations).length} annotations successfully!`);
+          let message = `Imported ${Object.keys(result.annotations).length} annotations successfully!`;
+          if (result.skippedCount > 0) {
+            message += ` Skipped ${result.skippedCount} invalid entries.`;
+          }
+          alert(message);
         } else {
           alert('Invalid file format. Expected JSON with "annotations" object.');
         }
@@ -175,13 +174,6 @@
       // Reset file input
       importFile.value = '';
     });
-  }
-
-  // Escape HTML
-  function escapeHtml(text) {
-    const div = document.createElement('div');
-    div.textContent = text;
-    return div.innerHTML;
   }
 
   // Listen for storage changes

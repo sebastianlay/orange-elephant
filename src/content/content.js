@@ -6,6 +6,8 @@
   // Cross-browser storage API (for change listener)
   const storage = typeof browser !== 'undefined' ? browser.storage : chrome.storage;
 
+  const { escapeHtml, isValidUsername, normalizeAnnotation, MAX_ANNOTATION_LENGTH } = OrangeElephantUtil;
+
   // State
   let annotations = {};
   let activePopup = null;
@@ -74,7 +76,8 @@
   // Extract username from URL
   function extractUsername(url) {
     const match = url.match(/user\?id=([^&]+)/);
-    return match ? match[1] : null;
+    const username = match ? match[1] : null;
+    return username && isValidUsername(username) ? username : null;
   }
 
   // Add annotation badge next to username
@@ -150,7 +153,7 @@
       </div>
       <p id="oe-popup-description" class="oe-sr-only">${hasAnnotation ? 'Edit or delete your annotation for this user.' : 'Add an annotation for this user.'}</p>
       <label for="oe-popup-input" class="oe-sr-only">Annotation for ${escapeHtml(username)}</label>
-      <input type="text" id="oe-popup-input" class="oe-popup-input" placeholder="Enter annotation..." value="${escapeHtml(annotations[username] || '')}" maxlength="50">
+      <input type="text" id="oe-popup-input" class="oe-popup-input" placeholder="Enter annotation...">
       <div class="oe-popup-actions">
         <button class="oe-link oe-popup-visit" type="button">Visit Profile</button>
         <div class="oe-button-group">
@@ -186,8 +189,10 @@
     popup.style.top = `${top}px`;
     popup.style.left = `${left}px`;
 
-    // Focus input
+    // Focus input; the value is set as a property so it needs no HTML escaping
     const input = popup.querySelector('.oe-popup-input');
+    input.maxLength = MAX_ANNOTATION_LENGTH;
+    input.value = annotations[username] || '';
     input.focus();
     input.select();
 
@@ -253,7 +258,7 @@
 
   // Save annotation
   async function saveAnnotation(username, text) {
-    text = text.trim();
+    text = normalizeAnnotation(text);
     if (text) {
       annotations[username] = text;
     } else {
@@ -292,13 +297,6 @@
     if (activePopup && !activePopup.contains(e.target)) {
       closePopup();
     }
-  }
-
-  // Escape HTML to prevent XSS
-  function escapeHtml(text) {
-    const div = document.createElement('div');
-    div.textContent = text;
-    return div.innerHTML;
   }
 
   // Observe DOM for dynamically loaded content
