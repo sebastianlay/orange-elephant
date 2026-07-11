@@ -161,20 +161,23 @@
     document.body.appendChild(popup);
     activePopup = popup;
 
-    // Position popup
+    // Position popup in document coordinates (anchor rect + scroll offset)
     const popupRect = popup.getBoundingClientRect();
     let top = rect.bottom + window.scrollY + 5;
     let left = rect.left + window.scrollX;
 
-    // Adjust if going off-screen
-    if (left + popupRect.width > window.innerWidth) {
-      left = window.innerWidth - popupRect.width - 10;
+    // Keep the popup inside the visible part of the page
+    const viewportRight = window.scrollX + window.innerWidth;
+    const viewportBottom = window.scrollY + window.innerHeight;
+    if (left + popupRect.width > viewportRight) {
+      left = viewportRight - popupRect.width - 10;
     }
-    if (left < 10) {
-      left = 10;
+    if (left < window.scrollX + 10) {
+      left = window.scrollX + 10;
     }
-    if (top + popupRect.height > window.innerHeight + window.scrollY) {
-      top = rect.top + window.scrollY - popupRect.height - 5;
+    if (top + popupRect.height > viewportBottom) {
+      // Flip above the anchor, but never above the visible area
+      top = Math.max(window.scrollY + 5, rect.top + window.scrollY - popupRect.height - 5);
     }
 
     popup.style.top = `${top}px`;
