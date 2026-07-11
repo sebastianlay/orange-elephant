@@ -55,6 +55,17 @@ Check the extension for common issues:
 web-ext lint
 ```
 
+## Testing
+
+The unit and DOM tests live in `tests/` and run on Node.js (22+) using the
+built-in test runner, with [jsdom](https://github.com/jsdom/jsdom) simulating
+the browser environment:
+
+```bash
+npm install
+npm test
+```
+
 ## Building
 
 ### Build for Firefox

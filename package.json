@@ -1,0 +1,14 @@
+{
+  "name": "orange-elephant",
+  "version": "1.1.0",
+  "description": "Browser extension that adds personal annotations to Hacker News usernames",
+  "private": true,
+  "license": "GPL-3.0-only",
+  "homepage": "https://github.com/sebastianlay/orange-elephant",
+  "scripts": {
+    "test": "node --test \"tests/test-*.js\""
+  },
+  "devDependencies": {
+    "jsdom": "^29.1.1"
+  }
+}
