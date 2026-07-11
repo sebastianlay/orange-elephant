@@ -79,8 +79,11 @@
 
   // Add annotation badge next to username
   function addAnnotationBadge(link, username) {
-    const existingBadge = link.parentElement.querySelector('.oe-badge');
-    if (existingBadge) existingBadge.remove();
+    // A link's own badge is always its next sibling (inserted "afterend" below)
+    const existingBadge = link.nextElementSibling;
+    if (existingBadge && existingBadge.classList.contains('oe-badge')) {
+      existingBadge.remove();
+    }
 
     const badge = document.createElement('span');
     badge.className = 'oe-badge';
@@ -110,22 +113,15 @@
     link.insertAdjacentElement('afterend', badge);
   }
 
-  // Remove annotation badge
-  function removeAnnotationBadge(username) {
-    document.querySelectorAll(`.oe-badge[data-username="${username}"]`).forEach(badge => {
-      badge.remove();
-    });
-  }
-
-  // Update all badges for a username
-  function updateBadges(username) {
-    if (annotations[username]) {
-      document.querySelectorAll(`a[href="user?id=${username}"]`).forEach(link => {
+  // Rebuild all annotation badges from the current annotations
+  function refreshBadges() {
+    document.querySelectorAll('.oe-badge').forEach(badge => badge.remove());
+    document.querySelectorAll('a[href^="user?id="]').forEach(link => {
+      const username = extractUsername(link.href);
+      if (username && annotations[username]) {
         addAnnotationBadge(link, username);
-      });
-    } else {
-      removeAnnotationBadge(username);
-    }
+      }
+    });
   }
 
   // Show unified popup for viewing/adding/editing/deleting annotations
@@ -264,7 +260,7 @@
       delete annotations[username];
     }
     await saveAnnotations();
-    updateBadges(username);
+    refreshBadges();
     closePopup();
   }
 
@@ -272,7 +268,7 @@
   async function deleteAnnotation(username) {
     delete annotations[username];
     await saveAnnotations();
-    updateBadges(username);
+    refreshBadges();
     closePopup();
   }
 
@@ -330,11 +326,7 @@
     if (areaName === 'sync' && OrangeElephantStorage.hasAnnotationChanges(changes)) {
       // Reload annotations when storage changes
       await loadAnnotations();
-      document.querySelectorAll('.oe-badge').forEach(badge => badge.remove());
-      document.querySelectorAll('a[href^="user?id="]').forEach(link => {
-        link.dataset.oeProcessed = '';
-      });
-      processUserLinks();
+      refreshBadges();
     }
   });
 
