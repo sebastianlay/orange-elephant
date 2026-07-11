@@ -11,6 +11,11 @@
   // Cross-browser storage API
   const storage = typeof browser !== 'undefined' ? browser.storage : chrome.storage;
 
+  // Set when a load fails, so that saves are blocked until a load succeeds.
+  // Saving after a failed load would overwrite the synced data with an
+  // incomplete state (e.g. when chunks have not fully synced to this device yet).
+  let lastLoadFailed = false;
+
   // Compress string using Compression Streams API
   async function compress(str) {
     const blob = new Blob([str]);
@@ -43,6 +48,9 @@
 
   // Save annotations
   async function saveAnnotations(annotations) {
+    if (lastLoadFailed) {
+      throw new Error('Saving is disabled because your annotations could not be loaded');
+    }
     try {
       const json = JSON.stringify(annotations);
       const compressed = await compress(json);
@@ -101,6 +109,7 @@
       const meta = metaResult[META_KEY];
 
       if (!meta || !meta.chunkCount) {
+        lastLoadFailed = false;
         return {};
       }
 
@@ -124,11 +133,21 @@
 
       // Decompress and parse
       const json = await decompress(compressed);
-      return JSON.parse(json);
+      const annotations = JSON.parse(json);
+      lastLoadFailed = false;
+      return annotations;
     } catch (e) {
+      lastLoadFailed = true;
       console.error('Orange Elephant: Failed to load annotations', e);
-      return {};
+      throw e;
     }
+  }
+
+  // Check whether a storage.onChanged payload touches annotation data
+  function hasAnnotationChanges(changes) {
+    return Object.keys(changes).some(
+      (key) => key === META_KEY || key.startsWith(CHUNK_PREFIX)
+    );
   }
 
   // Get storage statistics
@@ -167,6 +186,7 @@
   window.OrangeElephantStorage = {
     save: saveAnnotations,
     load: loadAnnotations,
-    getStats: getStorageStats
+    getStats: getStorageStats,
+    hasAnnotationChanges: hasAnnotationChanges
   };
 })();

@@ -186,7 +186,7 @@
 
   // Listen for storage changes
   storage.onChanged.addListener(async (changes, areaName) => {
-    if (areaName === 'sync' && (changes.oe_meta || changes.annotations)) {
+    if (areaName === 'sync' && OrangeElephantStorage.hasAnnotationChanges(changes)) {
       await loadAnnotations();
       render(searchInput.value);
       updateStorageStats();

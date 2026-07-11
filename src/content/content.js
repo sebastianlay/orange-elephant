@@ -327,7 +327,7 @@
 
   // Listen for storage changes from other tabs/windows
   storage.onChanged.addListener(async (changes, areaName) => {
-    if (areaName === 'sync' && (changes.oe_meta || changes.annotations)) {
+    if (areaName === 'sync' && OrangeElephantStorage.hasAnnotationChanges(changes)) {
       // Reload annotations when storage changes
       await loadAnnotations();
       document.querySelectorAll('.oe-badge').forEach(badge => badge.remove());
