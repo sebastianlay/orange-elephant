@@ -17,6 +17,7 @@
   const importFile = document.getElementById('importFile');
   const storageBar = document.getElementById('storageBar');
   const storageText = document.getElementById('storageText');
+  const statusEl = document.getElementById('statusMessage');
 
   let annotations = {};
 
@@ -67,6 +68,18 @@
     }
   }
 
+  // Show a transient status message (alert() is not displayed in Firefox popups)
+  let statusTimer = null;
+  function showStatus(message, isError) {
+    statusEl.textContent = message;
+    statusEl.classList.toggle('error', !!isError);
+    statusEl.hidden = false;
+    clearTimeout(statusTimer);
+    statusTimer = setTimeout(() => {
+      statusEl.hidden = true;
+    }, 5000);
+  }
+
   // Render the annotations list
   function render(filter = '') {
     const entries = Object.entries(annotations);
@@ -114,8 +127,16 @@
       btn.addEventListener('click', async (e) => {
         const item = e.target.closest('.annotation-item');
         const username = item.dataset.username;
+        const previous = annotations[username];
         delete annotations[username];
-        await saveAnnotations();
+        try {
+          await saveAnnotations();
+        } catch (err) {
+          // Roll back so the list does not pretend the deletion happened
+          annotations[username] = previous;
+          showStatus(`Failed to delete: ${err.message}`, true);
+          return;
+        }
         render(searchInput.value);
       });
     });
@@ -163,12 +184,12 @@
           if (result.skippedCount > 0) {
             message += ` Skipped ${result.skippedCount} invalid entries.`;
           }
-          alert(message);
+          showStatus(message);
         } else {
-          alert('Invalid file format. Expected JSON with "annotations" object.');
+          showStatus('Invalid file format. Expected JSON with "annotations" object.', true);
         }
       } catch (err) {
-        alert('Failed to import: ' + err.message);
+        showStatus(`Failed to import: ${err.message}`, true);
       }
 
       // Reset file input

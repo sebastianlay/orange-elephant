@@ -85,6 +85,11 @@
   border-color: #f60;
 }
 
+.oe-popup-error {
+  color: #f00;
+  margin: 0 0 8px;
+}
+
 .oe-popup-actions {
   display: flex;
   justify-content: space-between;
@@ -164,4 +169,8 @@ html[data-darkreader-scheme="dark"] .oe-link:focus {
 html[data-darkreader-scheme="dark"] .oe-popup-close {
   color: #fff;
   outline-color: #fff;
+}
+
+html[data-darkreader-scheme="dark"] .oe-popup-error {
+  color: #ff6b6b;
 }

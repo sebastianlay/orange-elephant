@@ -155,17 +155,14 @@
     try {
       const meta = await storage.sync.get(META_KEY);
 
-      // Get bytes in use (handle both callback and promise APIs)
-      let bytesInUse = 0;
+      // Get bytes in use (both Firefox and Chrome MV3 support the promise API)
+      let bytesInUse;
       try {
-        if (typeof browser !== 'undefined') {
-          bytesInUse = await storage.sync.getBytesInUse(null);
-        } else {
-          bytesInUse = await new Promise((resolve) => {
-            storage.sync.getBytesInUse(null, resolve);
-          });
-        }
+        bytesInUse = await storage.sync.getBytesInUse(null);
       } catch (e) {
+        bytesInUse = null;
+      }
+      if (typeof bytesInUse !== 'number' || Number.isNaN(bytesInUse)) {
         // Fallback: estimate from meta
         bytesInUse = (meta[META_KEY]?.chunkCount || 0) * CHUNK_SIZE;
       }
@@ -175,7 +172,7 @@
         bytesTotal: 102400, // 100KB
         chunksUsed: meta[META_KEY]?.chunkCount || 0,
         chunksTotal: MAX_CHUNKS,
-        percentUsed: Math.round((bytesInUse / 102400) * 100)
+        percentUsed: Math.min(100, Math.round((bytesInUse / 102400) * 100))
       };
     } catch (e) {
       return null;

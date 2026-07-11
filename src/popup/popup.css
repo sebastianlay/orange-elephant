@@ -212,6 +212,21 @@ body, input {
   background: #e0e0e0;
 }
 
+/* Status message */
+.status-message {
+  margin-top: 12px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  background: #f0f0f0;
+  color: #333;
+}
+
+.status-message.error {
+  background: #fee;
+  color: #dc3545;
+}
+
 /* Scrollbar */
 .annotations-list::-webkit-scrollbar {
   width: 6px;

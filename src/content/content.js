@@ -30,15 +30,6 @@
     }
   }
 
-  // Save annotations
-  async function saveAnnotations() {
-    try {
-      await OrangeElephantStorage.save(annotations);
-    } catch (e) {
-      console.error('Orange Elephant: Failed to save annotations', e);
-    }
-  }
-
   // Find and process all user links on the page
   function processUserLinks() {
     const userLinks = document.querySelectorAll('a[href^="user?id="]');
@@ -210,7 +201,8 @@
     const deleteBtn = popup.querySelector('.oe-popup-delete');
     if (deleteBtn) {
       deleteBtn.addEventListener('click', () => {
-        deleteAnnotation(username);
+        // Deleting is saving an empty annotation
+        saveAnnotation(username, '');
       });
     }
 
@@ -256,25 +248,44 @@
     }
   }
 
-  // Save annotation
+  // Save annotation; empty text deletes it
   async function saveAnnotation(username, text) {
     text = normalizeAnnotation(text);
+    const previous = annotations[username];
     if (text) {
       annotations[username] = text;
     } else {
       delete annotations[username];
     }
-    await saveAnnotations();
+
+    try {
+      await OrangeElephantStorage.save(annotations);
+    } catch (e) {
+      // Roll back so the page does not pretend the change was saved
+      if (previous === undefined) {
+        delete annotations[username];
+      } else {
+        annotations[username] = previous;
+      }
+      showPopupError(`Could not save: ${e.message}`);
+      return;
+    }
+
     refreshBadges();
     closePopup();
   }
 
-  // Delete annotation
-  async function deleteAnnotation(username) {
-    delete annotations[username];
-    await saveAnnotations();
-    refreshBadges();
-    closePopup();
+  // Show an error message inside the active popup
+  function showPopupError(message) {
+    if (!activePopup) return;
+    let error = activePopup.querySelector('.oe-popup-error');
+    if (!error) {
+      error = document.createElement('p');
+      error.className = 'oe-popup-error';
+      error.setAttribute('role', 'alert');
+      activePopup.querySelector('.oe-popup-actions').insertAdjacentElement('beforebegin', error);
+    }
+    error.textContent = message;
   }
 
   // Close popup
