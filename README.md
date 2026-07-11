@@ -53,6 +53,6 @@ Click the extension icon to open the popup where you can:
 
 On Firefox, the Import button first opens this view in a new tab, since Firefox does not allow choosing a file while the popup is open.
 
-## Syncing und Privacy
+## Syncing and Privacy
 
 Annotations are stored using the browser's sync storage API and are only visible to you. As long as you're signed into your browser (Chrome account or Firefox account), annotations will automatically sync to all your browser instances. There is a storage limit of 100KB, but this is sufficient for hundreds of short annotations.

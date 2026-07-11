@@ -3,7 +3,8 @@
 (function() {
   'use strict';
 
-  const MAX_CHUNKS = 500; // Reserve 12 keys for future use (512 - 500)
+  const MAX_CHUNKS = 500; // Stay below the 512 item limit of the sync storage
+  // (in practice the 100KB total quota is exhausted at about 13 chunks anyway)
   const CHUNK_SIZE = 8000; // Slightly under 8KB limit to be safe
   const CHUNK_PREFIX = 'oe_chunk_';
   const META_KEY = 'oe_meta';
