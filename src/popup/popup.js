@@ -8,6 +8,9 @@
 
   const { escapeHtml, sanitizeAnnotations } = OrangeElephantUtil;
 
+  // Whether this page runs as a regular tab instead of the browser action popup
+  const runningInTab = new URLSearchParams(window.location.search).has('tab');
+
   // DOM elements
   const countEl = document.getElementById('annotationCount');
   const listEl = document.getElementById('annotationsList');
@@ -162,7 +165,15 @@
     });
 
     // Import
-    importBtn.addEventListener('click', () => {
+    importBtn.addEventListener('click', async () => {
+      // Firefox closes the popup as soon as the file picker opens, destroying
+      // this page before the file can be read (see Bugzilla #1292701), so the
+      // import has to run from a regular tab instead
+      if (typeof browser !== 'undefined' && !runningInTab) {
+        await browser.tabs.create({ url: `${window.location.href}?tab` });
+        window.close();
+        return;
+      }
       importFile.click();
     });
 
